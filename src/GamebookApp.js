@@ -9,14 +9,14 @@ export const GamebookApp = () => {
 
     return(
         <>
-        <UserContext.Provider value = {
-            {
-                username,
-                password
-            }
-        }>
-            <MainAppRouter/>
-        </UserContext.Provider>
+            <UserContext.Provider value = {
+                {
+                    username,
+                    password
+                }
+            }>
+                <MainAppRouter/>
+            </UserContext.Provider>
         </>
     )
 }
