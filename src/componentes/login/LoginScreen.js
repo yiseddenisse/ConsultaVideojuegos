@@ -3,10 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import { UserContext } from "../../hooks/UserContext";
 
 export const LoginScreen = () => {
-  const { username, password } = useContext(UserContext);
+  const { setUser } = useContext(UserContext);
   let message1 = '';
 
-  console.log("Username:", username, typeof(username), "password", password, typeof(password));
 
   const [enteredUsername, setEnteredUsername] = useState('');
   const [enteredPassword, setEnteredPassword] = useState('');
@@ -22,14 +21,13 @@ export const LoginScreen = () => {
       .then((data) => {
         dataM = data.mensaje;
         if (data.mensaje === 'Autenticación exitosa') {
-          navigate("/");
+
           setEnteredUsername(data.username);
           console.log(data.username)
-          setEnteredPassword('');
+
         } else {
           alert("Datos incorrectos, intente de nuevo");
-          setEnteredUsername('');
-          setEnteredPassword('');
+
         }
 
         // Fetch to get the username by email
@@ -40,7 +38,8 @@ export const LoginScreen = () => {
             console.log("Fetched Username:", fetchedUsername);
             // Use the fetched username here as needed
             //navigate("/", { state: { username: fetchedUsername } });
-            setEnteredUsername(fetchedUsername)
+            setUser( {id:123, name: fetchedUsername,});
+            navigate("/");
           });
       });
   };
@@ -79,5 +78,5 @@ export const LoginScreen = () => {
         </>
     )
 };
-    
+
 

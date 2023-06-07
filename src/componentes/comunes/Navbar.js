@@ -3,9 +3,11 @@ import React, { useContext } from "react";
 import {Link, NavLink } from "react-router-dom";
 import { UserContext } from "../../hooks/UserContext";
 
+
 export const Navbar = () =>{
     //Recuperar el usuario
-    const {username} = useContext(UserContext);
+    const { user } = useContext(UserContext);
+    console.log(user)
     return (
         <nav className = "navbar navbar-expand-sm navbar-dark bg-dark">
             <Link className = "navbar-brand"
@@ -52,7 +54,7 @@ export const Navbar = () =>{
             </NavLink>
             </div>
             </div>
-            <div style={{color: "#0000FF", marginLeft:"850px"}} >{username}</div> 
+            <div style={{color: "#0000FF", marginLeft:"850px"}} >{user.name}</div>
 
             <div className="navbar-collapse collapse w-100 order-3 dual-collapse2">
                 <ul className = "navbar-nav ml-auto">

@@ -35,7 +35,7 @@ export const GameCollectionApp = () => {
 
     const addGame = (juego) =>{
         const action = {
-            type: 'add', 
+            type: 'add',
             payload: juego
         }
     }
@@ -49,13 +49,13 @@ export const GameCollectionApp = () => {
     }
 
     return(
-        
+
         <>
             <div className="jumbotron jumbotron-fluid">
-                            <div className="container">
-                                <h1 className="display-4">Gamebook</h1>
-                                <p className="lead">Busca juegos por ID para agregarlos a la coleccion</p>
-                            </div>
+                <div className="container">
+                    <h1 className="display-4">Gamebook</h1>
+                    <p className="lead">Busca juegos por ID para agregarlos a la coleccion</p>
+                </div>
             </div>
 
             <form onSubmit = {handleAddGame}>
@@ -66,18 +66,18 @@ export const GameCollectionApp = () => {
             </form>
 
             <ol className="list-group list-group-numbered">
-            <div className = "d-flex flex-row">
-                {
-                    videogameState.map(juego => {
-                        return <GameScreen
-                            key={juego.id}
-                            gameID={juego.id}
-                            handleDeleteGame = {handleDeleteGame}
-                            addGame = {addGame}
-                        />
-                    })
-                }
-             </div>
+                <div className = "d-flex flex-row">
+                    {
+                        videogameState.map(juego => {
+                            return <GameScreen
+                                key={juego.id}
+                                gameID={juego.id}
+                                handleDeleteGame = {handleDeleteGame}
+                                addGame = {addGame}
+                            />
+                        })
+                    }
+                </div>
             </ol>
         </>
     )

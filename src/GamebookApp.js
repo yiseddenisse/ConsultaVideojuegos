@@ -1,18 +1,16 @@
-import React from "react";
+import React, {useState} from "react";
 import { UserContext } from "./hooks/UserContext";
 import { MainAppRouter } from "./routers/MainAppRouter";
 
-const username = ""
-const password = ""
-
 export const GamebookApp = () => {
+    const [user, setUser] = useState({});
 
     return(
         <>
             <UserContext.Provider value = {
                 {
-                    username,
-                    password
+                    user,
+                    setUser
                 }
             }>
                 <MainAppRouter/>

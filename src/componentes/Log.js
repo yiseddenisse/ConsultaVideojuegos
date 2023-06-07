@@ -5,14 +5,14 @@ import { UserContext } from "../hooks/UserContext";
 
 export const Log = () => {
 
-    const loggedUsername = useContext(UserContext).username
+    const { user } = useContext(UserContext);
     const [data, setData] = React.useState([])
 
     const fetchLogData= async() => {
-        const response = await fetch (`http://localhost:8586/event/${loggedUsername}`)
+        const response = await fetch (`http://localhost:8586/event/${user.name}`)
         const data = await response.json()
         setData(data)
-        return 
+        return
     };
 
     React.useEffect(() => {
@@ -21,7 +21,7 @@ export const Log = () => {
 
     return (
         <div>
-            <h1>Logs de {loggedUsername}</h1>
+            <h1>Logs de {user.name}</h1>
             <table>
                 <thead>
                     <tr>
