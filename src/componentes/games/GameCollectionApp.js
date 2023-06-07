@@ -1,19 +1,36 @@
-import React, { useEffect, useReducer} from 'react';
+import React, {useEffect, useReducer, useState} from 'react';
 import { GameScreen } from './GameScreen';
 import { gamesReducer } from '../../hooks/gamesReducer';
 import { useForm } from '../../hooks/useForm';
+import axios from 'axios';
 
-const init = () => {return JSON.parse(localStorage.getItem("Videogames")) || [];}
+const API_BASE_URL = 'http://localhost:8586/videojuegos';
+
+const init = async () => {
+    try {
+        const response = await fetch(`${API_BASE_URL}/usr_1`);
+        if (!response.ok) {
+            throw new Error('Error fetching data');
+        }
+        const data = await response.json();
+        console.log(data);
+        return data;
+
+    } catch (error) {
+        console.error('Error fetching data:', error);
+
+    }
+}
 
 export const GameCollectionApp = () => {
 
-    const [videogameState, dispatch] = useReducer(gamesReducer, [], init)
+    const [videogameState, dispatch] = useReducer(gamesReducer, [],init)
 
     const [{gameID}, handleInputChange, reset] = useForm({})
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
-    useEffect(() => {
-        localStorage.setItem('Videogames', JSON.stringify(videogameState))
-    }, [videogameState])
+
 
 
     const handleAddGame = (e) => {
@@ -35,7 +52,7 @@ export const GameCollectionApp = () => {
 
     const addGame = (juego) =>{
         const action = {
-            type: 'add', 
+            type: 'add',
             payload: juego
         }
     }
@@ -49,37 +66,46 @@ export const GameCollectionApp = () => {
     }
 
     return(
-        
         <>
-            <div className="jumbotron jumbotron-fluid">
-                            <div className="container">
-                                <h1 className="display-4">Gamebook</h1>
-                                <p className="lead">Busca juegos por ID para agregarlos a la coleccion</p>
+            {/* Display loading message while data is being fetched */}
+            {loading ? (
+                <p>Loading...</p>
+            ) : (
+                <>
+                    {/* Display error state */}
+                    {error && <p>{error}</p>}
+                    {/* Display the fetched data */}
+                    {Array.isArray(videogameState) && videogameState.length === 0 ? (
+                        <p>No games found.</p>
+                    ) : (
+                        <ol className="list-group list-group-numbered">
+                            {console.log(videogameState.length)}
+                            <div className="d-flex flex-row">
+                                {videogameState && videogameState.map((juego) => (
+                                    <GameScreen
+                                        key={juego.id}
+                                        gameID={juego.id}
+                                        handleDeleteGame={handleDeleteGame}
+                                        addGame={addGame}
+                                    />
+                                ))}
                             </div>
-            </div>
-
-            <form onSubmit = {handleAddGame}>
-                <input name = "gameID" type = "text" className = "form-control" placeholder='Ingresa ID del juego' value = {gameID} onChange={handleInputChange}>
-
-                </input>
-                <button type = "submit" className='btn btn-outline-primary mt-1 btn-block'>Agregar</button>
-            </form>
-
-            <ol className="list-group list-group-numbered">
-            <div className = "d-flex flex-row">
-                {
-                    videogameState.map(juego => {
-                        return <GameScreen
-                            key={juego.id}
-                            gameID={juego.id}
-                            handleDeleteGame = {handleDeleteGame}
-                            addGame = {addGame}
-                        />
-                    })
-                }
-             </div>
-            </ol>
+                        </ol>
+                    )}
+                </>
+            )}
         </>
-    )
+    );
+};
 
-}
+export default GameCollectionApp;
+
+
+
+
+
+
+
+
+
+
