@@ -43,6 +43,13 @@ export const Navbar = () =>{
             >
             Mi buscador
             </NavLink>
+            <NavLink
+            className={({ isActive }) => isActive ? "active" : "nav-item nav-link"}
+            exact="true"
+            to="/Log"
+            >
+            Log
+            </NavLink>
             </div>
             </div>
             <div style={{color: "#0000FF", marginLeft:"850px"}} >{username}</div> 

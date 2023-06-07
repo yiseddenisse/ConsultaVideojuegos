@@ -2,8 +2,8 @@ import React from "react";
 import { UserContext } from "./hooks/UserContext";
 import { MainAppRouter } from "./routers/MainAppRouter";
 
-const username = "YisedAp"
-const password = "Skr26"
+const username = ""
+const password = ""
 
 export const GamebookApp = () => {
 

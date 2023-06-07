@@ -3,42 +3,47 @@ import { useNavigate } from 'react-router-dom';
 import { UserContext } from "../../hooks/UserContext";
 
 export const LoginScreen = () => {
+  const { username, password } = useContext(UserContext);
+  let message1 = '';
 
-    const {username, password} = useContext(UserContext)
-    let message1='';
+  console.log("Username:", username, typeof(username), "password", password, typeof(password));
 
-    console.log("Username:", username, typeof(username), "password", password, typeof(password))
+  const [enteredUsername, setEnteredUsername] = useState('');
+  const [enteredPassword, setEnteredPassword] = useState('');
+  const [enteredMessage, setMessage] = useState('');
 
-    const [enteredUsername, setEnteredUsername] = useState('');
-    const [enteredPassword, setEnteredPassword] = useState('');
-    const[enteredMessage,setMessage]=  useState('')
+  const navigate = useNavigate();
+  const doLogin = (e) => {
+    e.preventDefault();
+    let dataM;
 
-    const navigate = useNavigate();
-    const doLogin = (e) => {
-        e.preventDefault();
-        let dataM;
+    fetch("/usuarios/autenticar/" + enteredUsername + "/" + enteredPassword)
+      .then((res) => res.json())
+      .then((data) => {
+        dataM = data.mensaje;
+        if (data.mensaje === 'Autenticación exitosa') {
+          navigate("/");
+          setEnteredUsername(data.username);
+          console.log(data.username)
+          setEnteredPassword('');
+        } else {
+          alert("Datos incorrectos, intente de nuevo");
+          setEnteredUsername('');
+          setEnteredPassword('');
+        }
 
-        fetch("/usuarios/autenticar/"+enteredUsername+"/"+enteredPassword)
-            .then((res) => res.json())
-            .then((data) => {
-                dataM = data.mensaje
-                if(data.mensaje==='Autenticación exitosa'){
-                    navigate("/");
-                    setEnteredUsername('');
-                    setEnteredPassword('');
-                }else{
-                    alert("Datos incorrectos, intente de nuevo");
-                    setEnteredUsername('');
-                    setEnteredPassword('');
-                }
-
-            })
-
-
-
-
-    }
-
+        // Fetch to get the username by email
+        fetch("/usuarios/" + enteredUsername)
+          .then((res) => res.json())
+          .then((userData) => {
+            const fetchedUsername = userData.username;
+            console.log("Fetched Username:", fetchedUsername);
+            // Use the fetched username here as needed
+            //navigate("/", { state: { username: fetchedUsername } });
+            setEnteredUsername(fetchedUsername)
+          });
+      });
+  };
 
     return (
         <>
@@ -73,4 +78,6 @@ export const LoginScreen = () => {
 
         </>
     )
-}
+};
+    
+
